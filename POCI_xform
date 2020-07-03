@@ -1,0 +1,28 @@
+import maya.cmds as cmds
+
+sel = cmds.ls(sl =1)
+sel2 = sel[0]
+sel.pop(0)
+Find = cmds.listRelatives(sel2 , s = 1 , type = 'shape')
+
+
+
+for x in range(0,len(sel)):
+	node = cmds.shadingNode('pointOnCurveInfo' , au = True, n = 'POCI_' + sel[x] + '0' + str(x+1))
+	cmds.setAttr(node +'.turnOnPercentage', 1)
+	cmds.connectAttr(Find[0] + '.worldSpace[0]' , node + '.inputCurve')
+	
+	
+
+	
+	value = x * 0.333
+	
+	if value >= 0.999:
+		value = 1
+	else:
+		pass
+	cmds.setAttr(node +'.parameter', value)
+	
+	cmds.connectAttr(node +'.result.position' , sel[x] + '.translate')
+	
+	
